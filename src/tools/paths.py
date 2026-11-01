@@ -27,17 +27,24 @@ def is_blocked_path(path: str) -> str:
     return any(fnmatch(normalized, pattern) for pattern in BLOCKED_PATHS_PATTERNS)
 
 
-def is_safe_workspace(path: Path) -> bool:
-    try:
-        work_dir = get_work_dir()
-        work_dir.mkdir(parents=True, exist_ok=True)
-
-        candidate = (work_dir / Path(path).relative_to(Path(path).anchor)).resolve()
-
-        if candidate.is_relative_to(work_dir):
-            return True
-        
-        raise ValueError(f"Path {path} escapes the working directory {work_dir}")
+def resolve_work_path(path: str) -> Path:
+    """
+    Resolves a requested path against the workspace root.
+    Returns the absolute Path object if safe, raises ValueError if it escapes.
+    """
+    work_dir = get_work_dir().resolve()
+    work_dir.mkdir(parents=True, exist_ok=True)
     
-    except (ValueError, OSError):
-        return False
+    raw_path = Path(path)
+    
+    if raw_path.anchor:
+        raw_path = raw_path.relative_to(raw_path.anchor)
+        
+    candidate = (work_dir / raw_path).resolve()
+    
+    if candidate.is_relative_to(work_dir):
+        return candidate
+        
+    raise ValueError(f"Path '{path}' escapes the working directory '{work_dir}'")
+
+
