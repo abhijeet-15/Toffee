@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import override
+
 from dotenv import load_dotenv
 
 load_dotenv()

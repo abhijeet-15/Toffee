@@ -1,10 +1,12 @@
 import os
-from openai import OpenAI
+
 from dotenv import load_dotenv
+from langchain_core.providers import Provider as LCProvider
+from langchain_openai import ChatOpenAI
+from openai import OpenAI
+
 from .config import PROVIDERS
 from .models import Provider
-from langchain_openai import ChatOpenAI
-from langchain_core.providers import Provider
 
 load_dotenv()
 
@@ -26,7 +28,7 @@ def build_client(provider: Provider):
     )
 
 
-def build_chat_model() -> tuple[ChatOpenAI, Provider]:
+def build_chat_model() -> tuple[ChatOpenAI, LCProvider]:
     provider = select_provider()
     client = build_client(provider)
     kwargs: dict = {

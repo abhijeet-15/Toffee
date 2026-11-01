@@ -1,5 +1,6 @@
-from pathlib import Path
 from fnmatch import fnmatch
+from pathlib import Path
+
 from src.config.config import get_work_dir
 
 BLOCKED_PATHS_PATTERNS = [
@@ -16,15 +17,14 @@ BLOCKED_PATHS_PATTERNS = [
 def normalized_path(path: str) -> str:
     normalized = Path(path).as_posix()
 
-    if normalized.startswith("./"):
-        normalized = normalized[2:]
+    normalized = normalized.removeprefix("./")
     
     return normalized
 
 
 def is_blocked_path(path: str) -> str:
     normalized = normalized_path(path)
-    return any(fnmatch(path, pattern) for pattern in BLOCKED_PATHS_PATTERNS)
+    return any(fnmatch(normalized, pattern) for pattern in BLOCKED_PATHS_PATTERNS)
 
 
 def is_safe_workspace(path: Path) -> bool:
@@ -39,5 +39,5 @@ def is_safe_workspace(path: Path) -> bool:
         
         raise ValueError(f"Path {path} escapes the working directory {work_dir}")
     
-    except Exception:
+    except (ValueError, OSError):
         return False
