@@ -22,13 +22,13 @@ def list_files(path: str = ".") -> str:
     try:
         base_path = resolve_work_path(path)
     except ValueError:
-        return json.dumps({"erorr": f"Path {path!r} escapes working directory"})   
+        return json.dumps({"error": f"Path {path!r} escapes working directory"})   
     
     if not base_path.exists():
-        return json.dumps({"erorr": f"Path {path!r} does not exits"})
+        return json.dumps({"error": f"Path {path!r} does not exits"})
     
     if not base_path.is_dir():
-        return json.dumps({"erorr": f"Path {path!r} is not a directory"})
+        return json.dumps({"error": f"Path {path!r} is not a directory"})
     
     result: list[str] = []
 
