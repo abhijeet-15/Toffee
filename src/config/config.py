@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-PROJECT_DIR = PROJECT_ROOT / "prompts"
+PROMPTS_DIR = PROJECT_ROOT / "prompts"
 DEFAULT_WORK_DIR = PROJECT_ROOT / "workspace"
 AGENT_NAME = "Toffee"
 MAX_MODEL_CALLS_PER_RUN = int(os.getenv("MAX_MODEL_CALLS_PER_RUN", "10"))
