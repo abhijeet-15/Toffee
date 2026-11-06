@@ -13,7 +13,7 @@ def build_hitl_middleware() -> HumanInTheLoopMiddleware:
             "edit_file": {
                 "allowed_decisions": ["approve", "edit", "reject"],
                 "description": "Edit an existing file on the disk"
-            }
+            },
             "read_file": False,
             "list_files": False
         },
